@@ -1,0 +1,7 @@
+#ifndef PERSONWITHSTRENGTHTOFIGHT_H
+#define PERSONWITHSTRENGTHTOFIGHT_H
+
+#include "Noble.h"
+
+
+#endif
