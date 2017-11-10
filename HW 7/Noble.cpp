@@ -68,4 +68,77 @@ namespace WarriorCraft{
   bool Noble::isAlive() const{
     return alive;
   }
+
+  size_t findProtector(const vector<Protector*>& protectors, const Protector& protector){
+    for (size_t index = 0; index < protectors.size(); index++){
+      if (protectors[index]->getName() == protector.getName()) {return index;}
+    }
+    return protectors.size();
+  }
+  //recalculate protectors' strengths
+  //powerRatio is a multiplier indicative of how much % strength should be left
+  void Lord::takeDamage(float powerRatio){
+    for(Protector* protector: protectors){
+      protector->takeDamage(protector->getStrength()*powerRatio);
+    }
+  };
+  //sum of the protectors' strength
+  int Lord::getStrength() const
+  {
+    int sum = 0;
+    for (const Protector* protector: protectors){
+      sum += protector->getStrength();
+    }
+    return sum;
+  }
+  void Lord::display() const {
+    Noble::display();
+    cout  << " has an army of " << protectors.size() << endl;
+    for(const Protector* protector : protectors){
+      cout << protector->getName() << ": " << protector->getStrength() << endl;
+    }
+  }
+  bool Lord::fire(Protector& protector){
+    if (!isAlive()) {
+      cout << getName() << " is dead!" << endl;
+      return false;
+    }
+    int index = findProtector(protectors, protector);
+    if (index == protectors.size() ) { 
+      cout << getName() << " has no protector " << protector.getName() << endl;
+      return false;
+    }
+    //just move everything forward
+    for (index; index < protectors.size() - 1; index++){
+      protectors[index] = protectors[index + 1];
+    }
+    //last one is empty so let's remove it
+    protectors.pop_back();
+    protector.setLord(nullptr);
+    return true;
+  }
+  bool Lord::hires(Protector& protector){ 
+    if (!isAlive()){
+      cout << getName() << " is dead!" << endl;
+      return false;
+    }
+    else if (protector.getLord()){
+      cout << "Protector already employed." << endl;
+      return false;
+    }
+    protector.setLord(this);
+    protectors.push_back(&protector);
+    return true; 
+  }
+
+  void PersonWithStrengthToFight::takeDamage(float powerRatio){
+    strength*=powerRatio;
+  }
+  int PersonWithStrengthToFight::getStrength() const
+  {
+    return strength;
+  }
+  Lord::Lord(const string& name): Noble(name){}
+  PersonWithStrengthToFight::PersonWithStrengthToFight(const string& name, int strength ): Noble(name), strength(strength){}
+  
 }

@@ -22,17 +22,26 @@ namespace WarriorCraft{
     bool alive = true; 
   };
   
-  // class Lord: public Noble{
-  // public:
-  //   Lord(const std::string& name);
-  //   void display() const;
-  //   int getStrength() const;
-  //   bool hires(Protector& protector);
-  //   bool fire(Protector& protector);
-  //   void takeDamage(float powerRatio);
-  // private:
-  //   std::vector<Protector*> protectors;
-  // };
+  class Lord: public Noble{
+  public:
+    Lord(const std::string& name);
+    void display() const;
+    int getStrength() const;
+    bool hires(Protector& protector);
+    bool fire(Protector& protector);
+    void takeDamage(float powerRatio);
+  private:
+    std::vector<Protector*> protectors;
+  };
+
+  class PersonWithStrengthToFight: public Noble{
+  public:
+    PersonWithStrengthToFight(const std::string& name, int strength);
+    int getStrength() const;
+    void takeDamage(float powerRatio);
+  private:
+    int strength;
+  };
 }
 
 #endif
