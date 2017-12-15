@@ -2,6 +2,7 @@
 #define RATIONAL_H
 
 namespace CS2124{
+  // operator+(int a, int b){}
   class Rational{
   public:
     Rational(int numerator = 0, int denominator = 1);

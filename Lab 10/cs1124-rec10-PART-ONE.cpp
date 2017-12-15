@@ -1,7 +1,40 @@
 
 #include <iostream>
+#include <vector>
 using namespace std;
 
+class Instrument{
+public:
+    virtual void makeSound() const = 0;
+};
+
+class Brass: public Instrument{
+public:
+    Brass(int mouthpiece): mouthpiece(mouthpiece){}
+    void makeSound() const{
+        cout << "To make a sound... blow on a mouthpiece of size " << mouthpiece << endl;
+    }
+private:
+    int mouthpiece;
+};
+
+class String: public Instrument{
+public:
+    String(int pitch): pitch(pitch){}
+    void makeSound() const{
+        cout << "To make a sound... bow a string with pitch " << pitch << endl;
+    }
+private:
+    int pitch;
+};
+
+class Percussion: public Instrument{
+public:
+    void makeSound() const{
+        cout << "To make a sound... hit me!" << endl;
+    }
+private:
+};
 
 class Musician {
 public:
@@ -22,65 +55,99 @@ private:
     Instrument* instr;
 };
 
+class MILL{
+public:
+    void receiveInstr(Instrument& instrument){
+        for (Instrument* i: instruments){
+            if (!i){
+                i = &instrument;
+                return;
+            }
+        }
+        instruments.push_back(&instrument);
+    }
+    void dailyTestPlay() const{
+        for (Instrument* i: instruments){
+            if(i){
+                i->makeSound();
+                
+        }
+    }
+    Instrument* loanOut() {
+        for (int i = 0; i < instruments.size(); ++i){
+            if(instruments[i]){
+                Instrument* ret = instruments[i];
+                instruments[i] = nullptr;
+                return ret;
+            }
+        }
+        return nullptr;
+    }
+    void giveBackInstr(Instrument& instrument){
+        receiveInstr(instrument);
+    }
+private:
+    vector<Instrument*> instruments;
+};
 
 // PART ONE
 int main() {
 
-    // cout << "Define some instruments ----------------------------------------\n";
-    // Drum drum;
-    // Cello cello(673);
-    // Cymbal cymbal;
-    // Trombone tbone(4);
-    // Trumpet trpt(12) ;
-    // Violin violin(567) ;
+    cout << "Define some instruments ----------------------------------------\n";
+    Percussion drum;
+    String cello(673);
+    Percussion cymbal;
+    Brass tbone(4);
+    Brass trpt(12) ;
+    String violin(567) ;
   
-    // // use the debugger to look at the mill
-    // cout << "Define the MILL ------------------------------------------------\n";
-    // MILL mill;
+    // use the debugger to look at the mill
+    cout << "Define the MILL ------------------------------------------------\n";
+    MILL mill;
   
-    // cout << "Put the instruments into the MILL ------------------------------\n";
-    // mill.receiveInstr(trpt);
-    // mill.receiveInstr(violin);
-    // mill.receiveInstr(tbone);
-    // mill.receiveInstr(drum);
-    // mill.receiveInstr(cello);
-    // mill.receiveInstr(cymbal);
+    cout << "Put the instruments into the MILL ------------------------------\n";
+    mill.receiveInstr(trpt);
+    mill.receiveInstr(violin);
+    mill.receiveInstr(tbone);
+    mill.receiveInstr(drum);
+    mill.receiveInstr(cello);
+    mill.receiveInstr(cymbal);
   
-    // cout << "Daily test -----------------------------------------------------\n";
-    // cout << endl;
-    // cout << "dailyTestPlay()" << endl;
-    // mill.dailyTestPlay();
-    // cout << endl;
+    cout << "Daily test -----------------------------------------------------\n";
+    cout << endl;
+    cout << "dailyTestPlay()" << endl;
+    mill.dailyTestPlay();
+    cout << endl;
   
-    // cout << "Define some Musicians-------------------------------------------\n";
-    // Musician j;
-    // Musician jj;
-    // Musician q;
+    cout << "Define some Musicians-------------------------------------------\n";
+    Musician j;
+    Musician jj;
+    Musician q;
   	
-    // cout << "TESTING: q.acceptInstr(*mill.loanOut());-----------------------\n";
-    // q.testPlay();	
-    // cout << endl;
-    // q.acceptInstr(*mill.loanOut());
-    // cout << endl;
-    // q.testPlay();
-    // cout << endl;
-    // cout << "dailyTestPlay()" << endl;
-    // mill.dailyTestPlay();
+    cout << "TESTING: q.acceptInstr(*mill.loanOut());-----------------------\n";
+    q.testPlay();	
+    cout << endl;
+    q.acceptInstr(*mill.loanOut());
+    cout << endl;
+    q.testPlay();
+    cout << endl;
+    cout << "dailyTestPlay()" << endl;
+    mill.dailyTestPlay();
   
-    // cout << endl << endl;
+    cout << endl << endl;
   
-    // q.testPlay();	
-    // cout << endl;
-    // mill.receiveInstr(*q.giveBackInstr());
-    // j.acceptInstr(*mill.loanOut());
-    // q.acceptInstr(*mill.loanOut());
-    // cout << endl;
-    // q.testPlay();
-    // cout << endl;
-    // j.testPlay();
-    // cout << endl;
-    // cout << "dailyTestPlay()" << endl;
-    // mill.dailyTestPlay();
+    q.testPlay();	
+    cout << endl;
+    mill.receiveInstr(*q.giveBackInstr());
+    j.acceptInstr(*mill.loanOut());
+    q.acceptInstr(*mill.loanOut());
+    cout << endl;
+    q.testPlay();
+    cout << endl;
+    j.testPlay();
+    cout << endl;
+    cout << "dailyTestPlay()" << endl;
+    mill.dailyTestPlay();
   
     // cout << "TESTING: mill.receiveInstr(*q.giveBackInstr()); -------------\n";
   
